@@ -8,12 +8,12 @@ namespace FilmesApi.Profiles
   {
     public FilmeProfile()
     {
-      CreateMap<CreateFilmeDto, Models.Filme>();
-      CreateMap<UpdateFilmeDto, Models.Filme>();
+      CreateMap<CreateFilmeDto, Filme>();
+      CreateMap<UpdateFilmeDto, Filme>();
       CreateMap<Filme, UpdateFilmeDto>();
-      CreateMap<Filme, ReadFilmeDto>();
-
-
+      CreateMap<Filme, ReadFilmeDto>()
+         .ForMember(filmeDto => filmeDto.Sessoes,
+                 opt => opt.MapFrom(filme => filme.Sessoes));
 
     }
   }

@@ -3,6 +3,7 @@ using FilmesApi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,16 +11,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmesApi.Migrations
 {
     [DbContext(typeof(FilmeContext))]
-    partial class FilmeContextModelSnapshot : ModelSnapshot
+    [Migration("20260127134204_Cinema e endereco")]
+    partial class Cinemaeendereco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.0")
-                .HasAnnotation("Proxies:ChangeTracking", false)
-                .HasAnnotation("Proxies:CheckEquality", false)
-                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
@@ -92,24 +92,6 @@ namespace FilmesApi.Migrations
                     b.ToTable("Filmes");
                 });
 
-            modelBuilder.Entity("FilmesApi.Models.Sessao", b =>
-                {
-                    b.Property<int>("FilmeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CinemaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("FilmeId", "CinemaId");
-
-                    b.HasIndex("CinemaId");
-
-                    b.ToTable("Sessoes");
-                });
-
             modelBuilder.Entity("FilmesApi.Models.Cinema", b =>
                 {
                     b.HasOne("FilmesApi.Models.Endereco", "Endereco")
@@ -121,39 +103,10 @@ namespace FilmesApi.Migrations
                     b.Navigation("Endereco");
                 });
 
-            modelBuilder.Entity("FilmesApi.Models.Sessao", b =>
-                {
-                    b.HasOne("FilmesApi.Models.Cinema", "Cinema")
-                        .WithMany("Sessoes")
-                        .HasForeignKey("CinemaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FilmesApi.Models.Filme", "Filme")
-                        .WithMany("Sessoes")
-                        .HasForeignKey("FilmeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cinema");
-
-                    b.Navigation("Filme");
-                });
-
-            modelBuilder.Entity("FilmesApi.Models.Cinema", b =>
-                {
-                    b.Navigation("Sessoes");
-                });
-
             modelBuilder.Entity("FilmesApi.Models.Endereco", b =>
                 {
                     b.Navigation("Cinema")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FilmesApi.Models.Filme", b =>
-                {
-                    b.Navigation("Sessoes");
                 });
 #pragma warning restore 612, 618
         }

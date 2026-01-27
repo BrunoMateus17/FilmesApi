@@ -38,9 +38,14 @@ namespace FilmesApi.Controllers
     }
 
     [HttpGet]
-    public IEnumerable<ReadFilmeDto> recuperarFilmes([FromQuery]int skip = 0, int take = 50)
+    public IEnumerable<ReadFilmeDto> recuperarFilmes([FromQuery]int skip = 0, int take = 50, string? nomeCinema = null)
     {
-      return _mapper.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(skip).Take(take)) ;
+
+      if (nomeCinema == null)
+      {
+        return _mapper.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(skip).Take(take).ToList());
+      }
+      return _mapper.Map<List<ReadFilmeDto>>(_context.Filmes.Skip(skip).Take(take).Where(filme => filme.Sessoes.Any(sessao => sessao.Cinema.Nome == nomeCinema)).ToList());
     }
 
     [HttpGet("{id}")]
@@ -87,7 +92,7 @@ namespace FilmesApi.Controllers
       if (filme != null)
       {
         _context.Filmes.Remove(filme);
-        _context.SaveChanges(); // Aqui o Pomelo executa o SQL no MySQL
+        _context.SaveChanges(); 
         return NoContent();
       }
       return NotFound();

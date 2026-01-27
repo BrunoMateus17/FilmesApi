@@ -11,7 +11,7 @@ try
   var connectionString = builder.Configuration.GetConnectionString("FilmeConnection");
 
   builder.Services.AddDbContext<FilmeContext>(opts =>
-    opts.UseMySql(
+    opts.UseLazyLoadingProxies().UseMySql(
       connectionString,
       ServerVersion.AutoDetect(connectionString)
     )
