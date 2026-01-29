@@ -50,3 +50,24 @@ Clone o repositório e navegue até a pasta do projeto:
 ```bash
 git clone [https://github.com/seu-usuario/FilmesApi.git](https://github.com/seu-usuario/FilmesApi.git)
 cd FilmesApi
+```
+### 3. Arquitetura e Relações (Database Schema)
+
+O projeto foca fortemente em relacionamentos entre entidades, utilizando o **Entity Framework Fluent API**:
+
+- **Cinema ↔ Endereço**: Relacionamento **1:1** (Um cinema possui um único endereço).
+- **Cinema ↔ Sessão**: Relacionamento **1:N** (Um cinema pode ter várias sessões).
+- **Filme ↔ Sessão**: Relacionamento **1:N** (Um filme pode estar em várias sessões).
+- **Cinema ↔ Filme**: Relacionamento **N:N** através da entidade intermédia **Sessão**.
+
+### 4. Configurações Avançadas
+
+### AutoMapper Profiles
+A aplicação utiliza **Profiles** para desacoplar a camada de persistência da camada de apresentação. Isso permite que alteres o banco de dados sem quebrar o contrato da API.
+
+Exemplo de mapeamento:
+```csharp
+CreateMap<CreateCinemaDto, Cinema>();
+CreateMap<Cinema, ReadCinemaDto>()
+    .ForMember(dto => dto.Endereco, opt => opt.MapFrom(src => src.Endereco));
+
